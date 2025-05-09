@@ -1,0 +1,28 @@
+name: Автоматична публікація новин
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  publish_news:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Клонування репозиторію
+        uses: actions/checkout@v3
+
+      - name: Налаштування Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Встановлення залежностей
+        run: |
+          pip install -r requirements.txt
+
+      - name: Запуск скрипта
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        run: python main.py
